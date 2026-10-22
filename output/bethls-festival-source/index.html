@@ -30,7 +30,8 @@ body{font-family:'Pretendard',sans-serif;color:var(--white);word-break:keep-all}
   background:linear-gradient(180deg,var(--navy) 0%,var(--indigo) 46%,var(--violet) 100%)}
 .fill{position:absolute;left:0;top:0;width:1080px;height:1920px}
 .abs{position:absolute}
-.scene{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:0}
+/* scenes sit 50px right so the x 60-920 content box is centred on the frame (x 110-970, centre 540) */
+.scene{position:absolute;left:50px;top:0;width:1080px;height:1920px;opacity:0}
 #s1{opacity:1}
 .txt{position:absolute;left:var(--bx);width:var(--bw);text-align:center;white-space:nowrap;font-weight:900;line-height:1;
   text-shadow:0 5px 0 rgba(10,6,40,.35)}
@@ -200,7 +201,7 @@ body{font-family:'Pretendard',sans-serif;color:var(--white);word-break:keep-all}
 
   <!-- S7 PESTA stage -->
   <section class="scene" id="s7">
-    <svg id="beams" class="fill" viewBox="0 0 1080 1920" style="pointer-events:none"></svg>
+    <svg id="beams" class="fill" viewBox="0 0 1080 1920" style="pointer-events:none;left:-50px"></svg>
     <div class="txt" id="s7a" style="top:252px;font-size:150px"></div>
     <div class="txt" id="s7b" style="top:410px;font-size:72px">밴드대회</div>
     <div class="txt o" id="s7c" style="top:500px;font-size:var(--fs-s)">총상금</div>
@@ -391,7 +392,7 @@ tl.eventCallback('onUpdate', render);
 /* scenes zoom through each other */
 const sceneIO = (id, key) => {
   const [a,b] = CFG.scene[key];
-  tl.fromTo(id, { opacity:0, scale:.86, transformOrigin:'50% 50%' }, { opacity:1, scale:1, duration:.4, ease:'power3.out' }, a);
+  tl.fromTo(id, { opacity:0, scale:.86, transformOrigin:'490px 960px' }, { opacity:1, scale:1, duration:.4, ease:'power3.out' }, a);
   tl.to(id, { opacity:0, scale:1.22, duration:.25, ease:'power2.in' }, b-.25);
 };
 const stamp = (sel, at, from={}, to={}) => tl.fromTo(sel,
