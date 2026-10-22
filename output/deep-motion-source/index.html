@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+<meta name="od-motion-output" content="video">
+    <meta name="od-motion-audio" content="required">
+    <link rel="alternate" type="video/mp4" href="../../film.mp4">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="./gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #0a0a0c;
+        --ink: #f2efe9;
+        --dim: #6f6f78;
+        --accent: #ffa13a;
+        --mono: "JetBrains Mono", "DejaVu Sans Mono", monospace;
+        --serif: "Bitstream Charter", "DejaVu Serif", Georgia, serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      .word {
+        position: absolute; left: 0; top: 0; white-space: nowrap;
+        font-family: var(--mono); color: var(--dim); opacity: 0;
+        letter-spacing: -0.02em; will-change: transform;
+      }
+      #halo {
+        position: absolute; left: 960px; top: 540px; width: 900px; height: 900px; margin: -450px 0 0 -450px;
+        background: radial-gradient(circle, rgba(255,161,58,0.55) 0%, rgba(255,161,58,0.16) 35%, rgba(255,161,58,0) 65%);
+        opacity: 0; border-radius: 50%;
+      }
+      #motif { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #digits { position: absolute; left: 960px; top: 540px; width: 0; height: 0; }
+      .dg {
+        position: absolute; left: -200px; top: -60px; width: 400px; text-align: center;
+        font-family: var(--mono); font-weight: 700; font-size: 112px; line-height: 120px;
+        color: var(--ink); opacity: 0; letter-spacing: -0.04em; white-space: nowrap;
+      }
+      #title { position: absolute; left: 540px; top: 316px; width: 1300px; }
+      .row { overflow: hidden; display: block; white-space: nowrap; }
+      .row > span { display: inline-block; will-change: transform; }
+      #deep { font-family: var(--serif); font-weight: 700; font-size: 300px; line-height: 300px; letter-spacing: -0.04em; color: var(--accent); }
+      #dash { font-family: var(--serif); font-weight: 700; font-size: 300px; line-height: 300px; color: var(--ink); margin-left: 24px; }
+      #sub { margin-top: 24px; font-family: var(--serif); font-weight: 700; font-size: 104px; line-height: 124px; color: var(--ink); letter-spacing: -0.02em; }
+      #sub .w { display: inline-block; overflow: hidden; vertical-align: top; margin-right: 26px; }
+      #sub .w > span { display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="15"
+      data-width="1920"
+      data-height="1080"
+      data-fps="30"
+      data-poster-time="13.8"
+    >
+      <audio src="assets/music.wav" data-start="0" data-duration="15" data-volume="0.8" preload="auto"></audio>
+      <div id="halo"></div>
+      <div id="words"></div>
+      <svg id="motif" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+        <g id="ringG">
+          <g id="ticks"></g>
+          <circle id="track" cx="960" cy="540" r="170" fill="none" stroke="#f2efe9" stroke-opacity="0.14" stroke-width="3"/>
+          <circle id="ring" cx="960" cy="540" r="170" fill="none" stroke="#ffa13a" stroke-width="8" stroke-linecap="round"
+                  transform="rotate(-90 960 540)"/>
+          <circle id="sweep" cx="960" cy="540" r="170" fill="none" stroke="#f2efe9" stroke-width="8" stroke-linecap="round"
+                  transform="rotate(-90 960 540)"/>
+          <g id="hand"><line x1="960" y1="540" x2="960" y2="392" stroke="#ffa13a" stroke-width="6" stroke-linecap="round"/></g>
+          <circle id="core" cx="960" cy="540" r="26" fill="#ffa13a"/>
+        </g>
+      </svg>
+      <div id="digits"></div>
+      <div id="title">
+        <div class="row"><span id="r1" style="display:inline-block"><span id="deep">Deep</span><span id="dash">—</span></span></div>
+        <div id="sub"></div>
+      </div>
+    </div>
+    <script>
+      const DURATION = 15;
+      const COL = { dim: "#6f6f78", accent: "#ffa13a" };
+      const CX = 960, CY = 540, R = 170;
+      const rootEl = document.getElementById("root");
+
+      // ---- content ----
+      const WORDS = [
+        // text, x, y, size, weight, rot, drift dx/dy sets
+        ["email", 330, 250, 84, 700, -8, [[90, 60], [-40, 110], [70, -30]]],
+        ["chat", 1500, 220, 64, 400, 6, [[-80, 70], [50, 120], [-60, -20]]],
+        ["news", 1180, 860, 96, 800, -4, [[-70, -50], [60, -90], [-30, 40]]],
+        ["todo", 640, 760, 120, 800, 5, [[60, -40], [-30, -60], [20, 20]]],
+        ["inbox", 1650, 640, 56, 300, -12, [[-60, -70], [30, 80], [-70, 20]]],
+        ["ping", 210, 560, 70, 500, 10, [[80, 40], [30, -90], [60, 50]]],
+        ["tabs", 940, 170, 104, 300, -3, [[-90, 50], [80, 70], [-30, 90]]],
+        ["scroll", 1380, 470, 74, 700, 8, [[40, 80], [-90, 30], [30, -70]]],
+        ["reply all", 520, 480, 52, 400, -6, [[60, 90], [-50, -40], [90, 20]]],
+        ["urgent", 1560, 900, 80, 800, -9, [[-60, -80], [40, -40], [-80, 30]]],
+        ["slack?", 300, 900, 62, 500, 7, [[70, -70], [90, -10], [40, 30]]],
+        ["later", 1000, 640, 58, 300, 4, [[-60, 70], [70, 30], [-40, -60]]],
+      ];
+      const wordsEl = document.getElementById("words");
+      const wordNodes = WORDS.map((w) => {
+        const d = document.createElement("div");
+        d.className = "word"; d.textContent = w[0];
+        d.style.fontSize = w[3] + "px"; d.style.fontWeight = w[4];
+        wordsEl.appendChild(d); return d;
+      });
+
+      // tick marks (60)
+      const ticksEl = document.getElementById("ticks");
+      const tickNodes = [];
+      for (let i = 0; i < 60; i++) {
+        const a = (i / 60) * Math.PI * 2 - Math.PI / 2;
+        const major = i % 5 === 0;
+        const r1 = R + 26, r2 = R + (major ? 58 : 44);
+        const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        l.setAttribute("x1", CX + Math.cos(a) * r1); l.setAttribute("y1", CY + Math.sin(a) * r1);
+        l.setAttribute("x2", CX + Math.cos(a) * r2); l.setAttribute("y2", CY + Math.sin(a) * r2);
+        l.setAttribute("stroke", major ? "#f2efe9" : "#6f6f78");
+        l.setAttribute("stroke-width", major ? 4 : 2);
+        ticksEl.appendChild(l); tickNodes.push(l);
+      }
+
+      // timer digits
+      const LABELS = ["25:00", "24:59", "24:58", "24:57", "24:56"];
+      const digitsEl = document.getElementById("digits");
+      const dgNodes = LABELS.map((s) => {
+        const d = document.createElement("div"); d.className = "dg"; d.textContent = s;
+        digitsEl.appendChild(d); return d;
+      });
+
+      // subtitle words
+      const subEl = document.getElementById("sub");
+      const subNodes = "one task at a time".split(" ").map((s) => {
+        const w = document.createElement("span"); w.className = "w";
+        const i = document.createElement("span"); i.textContent = s; w.appendChild(i);
+        subEl.appendChild(w); return i;
+      });
+
+      // ---- timeline ----
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+      const circ = 2 * Math.PI * R;
+
+      // initial states
+      gsap.set("#halo", { opacity: 0, scale: 0.2 });
+      gsap.set("#ring", { strokeDasharray: circ, strokeDashoffset: circ, opacity: 1 });
+      gsap.set("#sweep", { strokeDasharray: circ, strokeDashoffset: circ, opacity: 0 });
+      gsap.set("#track", { opacity: 0 });
+      gsap.set("#hand", { opacity: 0, rotation: 0, svgOrigin: CX + " " + CY });
+      gsap.set("#core", { scale: 0, svgOrigin: CX + " " + CY });
+      gsap.set("#ringG", { svgOrigin: CX + " " + CY, scale: 1, x: 0 });
+      gsap.set(tickNodes, { opacity: 0 });
+      gsap.set(dgNodes, { opacity: 0 });
+      gsap.set("#r1", { yPercent: 110 });
+      gsap.set("#deep", { scale: 1.0 });
+      gsap.set(subNodes, { yPercent: 115 });
+      gsap.set("#dash", { opacity: 0, x: -60 });
+      gsap.set(wordNodes, { xPercent: -50, yPercent: -50 });
+      WORDS.forEach((w, i) => gsap.set(wordNodes[i], { x: w[1], y: w[2], rotation: w[5], opacity: 0, scale: 0.9 }));
+
+      // Beat 1 (0-4s): chaotic drift
+      WORDS.forEach((w, i) => {
+        const n = wordNodes[i], at = 0.08 * i;
+        tl.to(n, { opacity: i % 5 === 0 ? 1 : 0.85, scale: 1, duration: 0.5, ease: "power2.out" }, at);
+        let x = w[1], y = w[2], rot = w[5], t0 = at;
+        const seg = 1.15;
+        w[6].forEach((dxy, k) => {
+          x += dxy[0]; y += dxy[1]; rot += (k % 2 ? -1 : 1) * (6 + i % 4 * 3);
+          tl.to(n, { x, y, rotation: rot, duration: seg, ease: "sine.inOut" }, t0);
+          t0 += seg;
+        });
+        // jittery amber flashes (a few words)
+        if (i % 3 === 0) {
+          const f = 0.9 + i * 0.22;
+          tl.to(n, { color: COL.accent, duration: 0.08, ease: "none" }, f);
+          tl.to(n, { color: COL.dim, duration: 0.18, ease: "power2.in" }, f + 0.22);
+        }
+      });
+      // the "todo" word is the attractor: swells and warms at ~3.1s
+      const todo = wordNodes[3];
+      tl.to(todo, { color: COL.accent, duration: 0.5, ease: "power2.out" }, 3.0);
+      tl.to(todo, { scale: 1.35, duration: 0.7, ease: "power3.out" }, 3.0);
+
+      // Beat 2 (3.9-6.1s): converge + collapse
+      const ORDER = [3, 0, 2, 6, 1, 7, 9, 5, 4, 8, 10, 11];
+      ORDER.forEach((idx, j) => {
+        const n = wordNodes[idx];
+        const at = 3.9 + j * 0.07;
+        const dur = 1.9 - j * 0.04;
+        // end positions from end of drift (4.0 offset) — tween from current value
+        tl.to(n, { x: CX, duration: dur, ease: "power3.in" }, at);
+        tl.to(n, { y: CY, duration: dur, ease: "power1.in" }, at);
+        tl.to(n, { rotation: "+=" + (idx % 2 ? 160 : -160), duration: dur, ease: "power2.in" }, at);
+        tl.to(n, { scale: 0.08, duration: dur, ease: "power3.in" }, at);
+        tl.to(n, { color: COL.accent, duration: dur * 0.6, ease: "power1.in" }, at);
+        tl.to(n, { opacity: 0, duration: 0.18, ease: "none" }, at + dur - 0.18);
+      });
+      // halo + core glow
+      tl.to("#halo", { opacity: 1, scale: 0.55, duration: 2.0, ease: "power2.in" }, 4.0);
+      tl.to("#core", { scale: 1, duration: 0.45, ease: "back.out(2)" }, 5.8);
+      tl.to("#halo", { scale: 1.1, opacity: 0.9, duration: 0.5, ease: "power3.out" }, 6.0);
+
+      // Beat 3 (6.2-7.0s): glow draws into the ring
+      tl.to("#ring", { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, 6.2);
+      tl.to("#track", { opacity: 1, duration: 0.5 }, 6.6);
+      tl.to("#core", { scale: 0.45, duration: 0.8, ease: "power2.inOut" }, 6.2);
+      tl.to("#halo", { scale: 0.8, opacity: 0.45, duration: 0.8, ease: "power2.out" }, 6.5);
+      tl.to(tickNodes, { opacity: 1, duration: 0.2, ease: "none", stagger: 0.007 }, 6.6);
+
+      // Beat 4 (7.0-11.4s): ticking timer
+      tl.to("#hand", { opacity: 1, duration: 0.2 }, 7.0);
+      tl.to("#hand", { rotation: 336, duration: 4.4, ease: "none" }, 7.0);
+      tl.set("#sweep", { opacity: 1 }, 7.0);
+      tl.to("#sweep", { strokeDashoffset: circ * (1 - 0.0), duration: 0.01 }, 7.0);
+      tl.fromTo("#sweep", { strokeDashoffset: circ }, { strokeDashoffset: circ * (1 - 0.93), duration: 4.4, ease: "none" }, 7.0);
+      dgNodes.forEach((d, k) => {
+        const t0 = 7.0 + k * 0.9;
+        tl.fromTo(d, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" }, t0);
+        if (k < dgNodes.length - 1) tl.to(d, { opacity: 0, duration: 0.05, ease: "none" }, t0 + 0.88);
+        // tick punch on the core
+        tl.fromTo("#halo", { scale: 0.8 }, { scale: 0.88, duration: 0.1, ease: "power2.out", yoyo: true, repeat: 1 }, t0);
+      });
+      tl.to("#halo", { opacity: 0.55, duration: 0.01 }, 7.0);
+
+      // Beat 5 (11.4-15s): timer resolves into the title
+      tl.to(dgNodes[4], { opacity: 0, duration: 0.3, ease: "power2.in" }, 11.4);
+      tl.to(tickNodes, { opacity: 0, duration: 0.4, ease: "power2.in" }, 11.4);
+      tl.to(["#hand", "#sweep", "#track"], { opacity: 0, duration: 0.35, ease: "power2.in" }, 11.4);
+      tl.to("#ringG", { x: -660, scale: 0.6, duration: 0.95, ease: "power3.inOut" }, 11.5);
+      tl.to("#core", { scale: 0.7, duration: 0.5, ease: "power2.out" }, 11.9);
+      tl.to("#halo", { x: -660, scale: 0.55, opacity: 0.7, duration: 0.95, ease: "power3.inOut" }, 11.5);
+      tl.to("#r1", { yPercent: 0, duration: 0.7, ease: "power4.out" }, 12.15);
+      tl.fromTo("#deep", { scale: 1.12, transformOrigin: "0% 100%" }, { scale: 1, duration: 0.8, ease: "power3.out" }, 12.15);
+      tl.to("#dash", { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 12.65);
+      subNodes.forEach((n, i) => tl.to(n, { yPercent: 0, duration: 0.55, ease: "power4.out" }, 12.95 + i * 0.22));
+      tl.to("#halo", { opacity: 0.35, duration: 1.2, ease: "sine.out" }, 13.3);
+
+      // full-length clock (real seconds)
+      const clock = { t: 0 };
+      tl.to(clock, { t: DURATION, duration: DURATION, ease: "none" }, 0);
+    </script>
+  <script data-od-motion-source-player="6">
+
+window.__odValidateMotionTimeline = function (root, tl) {
+  var mode = document.querySelector('meta[name="od-motion-output"]');
+  if (!mode || mode.content !== 'video') return null;
+  var seconds = Number(root && root.getAttribute('data-duration'));
+  if (!Number.isFinite(seconds) || seconds <= 0) return 'Motion video requires a positive data-duration.';
+  if (!tl || typeof tl.duration !== 'function' || typeof tl.timeScale !== 'function') return 'Motion video requires a registered GSAP timeline.';
+  if (!Number.isFinite(tl.timeScale()) || Math.abs(tl.timeScale() - 1) > 0.000001) return 'Motion video timeScale must be 1. Do not use duration(seconds) to stretch the timeline; author tracks in real seconds.';
+  if (!Number.isFinite(tl.duration()) || Math.abs(tl.duration() - seconds) > 0.001) return 'Motion video timeline duration must equal data-duration. Add a clock tween at time 0 for the full duration; do not change playback speed.';
+  if ((typeof tl.repeat === 'function' && tl.repeat() !== 0) || (typeof tl.delay === 'function' && tl.delay() !== 0)) return 'Motion video master timeline must have no repeat or delay.';
+  return null;
+};
+(function () {
+  function boot() {
+    if (window.__odMotionRender || window.__odMotionSourcePlayer) return;
+    var root = document.querySelector('[data-composition-id][data-duration][data-width][data-height]');
+    var mode = document.querySelector('meta[name="od-motion-output"]');
+    if (!root || (mode && mode.content === 'interactive')) return;
+    window.__odMotionSourcePlayer = true;
+    var width = Number(root.dataset.width), height = Number(root.dataset.height);
+    if (!(width > 0 && height > 0)) return;
+    var hint = document.createElement('output');
+    hint.setAttribute('data-od-motion-status', ''); hint.setAttribute('role', 'status');
+    hint.style.cssText = 'position:fixed;bottom:12px;right:12px;z-index:2147483647;padding:6px 10px;border-radius:6px;background:#17191d;color:white;font:13px system-ui;display:none';
+    document.body.appendChild(hint);
+    function notice(text) { hint.textContent = text; hint.style.display = text ? 'block' : 'none'; }
+    var hosted = window.__odMotionPreview === true || new URL(location.href).searchParams.get('odMotionPreview') === '1';
+    var thumbnail = window.__odMotionThumbnail === true || new URL(location.href).searchParams.get('odMotionThumbnail') === '1';
+    var instance = Date.now().toString(36) + Math.random().toString(36).slice(2);
+    var active = !hosted, playing = false, wantsPlay = true, pageActive = true, updateTimer = null;
+    var applyPlayback = function () {};
+    function requestActivity() { window.parent.postMessage({type:'od:motion-preview-request', id:instance, width:width, height:height}, '*'); }
+    function onActivity(event) {
+      var data = event.data;
+      if (!hosted || event.source !== window.parent || !data) return;
+      if (data.type === 'od:motion-preview-probe') { requestActivity(); return; }
+      if (data.type !== 'od:motion-preview-activity' || typeof data.active !== 'boolean' || (data.active && data.id !== instance)) return;
+      active = data.active; applyPlayback();
+    }
+    window.addEventListener('message', onActivity);
+    var tracks = Array.prototype.map.call(document.querySelectorAll('audio[src]'), function (audio) {
+      audio.pause(); audio.autoplay = false;
+      return { audio: audio, start: Number(audio.dataset.start || 0), duration: Number(audio.dataset.duration), volume: Number(audio.dataset.volume || 1), pending: false, blocked: false };
+    });
+    var muted = thumbnail;
+    function syncAudio(time, shouldPlay, force) {
+      tracks.forEach(function (track) {
+        var audio = track.audio, local = time - track.start;
+        if (thumbnail) { audio.muted = true; audio.pause(); return; }
+        var trackActive = local >= 0 && local < track.duration;
+        audio.volume = Math.max(0, Math.min(1, track.volume)); audio.muted = muted;
+        if (!trackActive || !shouldPlay) audio.pause();
+        var target = Math.max(0, Math.min(track.duration, local));
+        if (audio.readyState > 0 && (force || Math.abs(audio.currentTime - target) > .2)) audio.currentTime = target;
+        if (trackActive && shouldPlay && audio.paused && !track.pending && !track.blocked) {
+          track.pending = true;
+          var promise = audio.play();
+          if (promise) promise.catch(function (error) {
+            if (error && error.name === 'AbortError') return;
+            track.blocked = true;
+            notice(error && error.name === 'NotAllowedError' ? '点击画面开启声音' : '音频无法播放，请检查素材');
+          }).finally(function () {
+            track.pending = false;
+            if (!active || !pageActive || !playing || !wantsPlay) audio.pause();
+          });
+          else track.pending = false;
+        }
+      });
+    }
+    var fitStyle = document.createElement('style');
+    fitStyle.textContent = 'html,body{width:100% !important;height:100% !important;margin:0 !important;overflow:hidden !important}';
+    document.head.appendChild(fitStyle);
+    var stage = document.createElement('div');
+    root.parentNode.insertBefore(stage, root); stage.appendChild(root);
+    function fit() {
+      var scale = Math.min(innerWidth / width, Math.max(1, innerHeight) / height);
+      stage.style.cssText = 'position:fixed;width:' + width + 'px;height:' + height + 'px;left:' + ((innerWidth-width*scale)/2) + 'px;top:' + ((innerHeight-height*scale)/2) + 'px;transform-origin:0 0;transform:scale(' + scale + ')';
+    }
+    fit(); window.addEventListener('resize', fit);
+    var started = Date.now();
+    function connect() {
+      var tl = window.__timelines && window.__timelines[root.dataset.compositionId];
+      if (!tl || typeof tl.seek !== 'function' || typeof tl.play !== 'function' || !(tl.duration() > 0)) {
+        if (Date.now()-started < 15000) { setTimeout(connect, 100); return; }
+        notice('动效未就绪，请检查时间轴或依赖文件'); return;
+      }
+      var timingError = window.__odValidateMotionTimeline(root, tl);
+      if (timingError) { tl.pause(); notice(timingError); return; }
+      var duration = tl.duration();
+      applyPlayback = function () {
+        clearTimeout(updateTimer); updateTimer = null;
+        playing = active && pageActive && wantsPlay;
+        if (playing) {
+          if (tl.time() >= duration) tl.seek(0, false);
+          tl.play(); syncAudio(tl.time(), true, true); update();
+        } else { tl.pause(); syncAudio(tl.time(), false, true); }
+      };
+      function play() { wantsPlay = true; applyPlayback(); }
+      function pause() { wantsPlay = false; applyPlayback(); }
+      function seek(time) { pause(); tl.seek(Math.max(0, Math.min(duration, Number(time))), false); syncAudio(tl.time(), false, true); }
+      function replay() { seek(0); play(); }
+      window.__odMotionPlayer = {
+        play: play, pause: pause, seek: seek, replay: replay,
+        setMuted: function (value) { muted = thumbnail || !!value; syncAudio(tl.time(), playing, false); },
+        state: function () { return { playing: playing, active: active, time: tl.time(), duration: duration, muted: muted,
+          audio: tracks.map(function (track) { return { paused: track.audio.paused, time: track.audio.currentTime, muted: track.audio.muted, volume: track.audio.volume, blocked: track.blocked }; }) }; }
+      };
+      root.addEventListener('click', function () {
+        var blocked = tracks.some(function (track) { return track.blocked; });
+        if (blocked) { tracks.forEach(function (track) { track.blocked = false; }); notice(''); if (playing) syncAudio(tl.time(), true, true); else play(); }
+        else if (playing) pause(); else play();
+      });
+      tl.seek(0, false); applyPlayback();
+      function update() {
+        if (!stage.isConnected) { active = false; applyPlayback(); return; }
+        if (!active || !pageActive || !playing) return;
+        if (playing && tl.time() >= duration) { tl.seek(0, false); tl.play(); syncAudio(0, true, true); }
+        syncAudio(tl.time(), playing && !tl.paused(), false);
+        updateTimer = setTimeout(update, 33);
+      }
+    }
+    window.addEventListener('pagehide', function () { pageActive = false; applyPlayback(); tracks.forEach(function (track) { track.audio.pause(); }); });
+    window.addEventListener('pageshow', function () {
+      pageActive = true;
+      if (hosted) { active = false; requestActivity(); }
+      applyPlayback();
+    });
+    if (hosted) requestActivity();
+    connect();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true}); else boot();
+})();
+</script></body>
+</html>
