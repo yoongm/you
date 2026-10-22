@@ -19,8 +19,9 @@
   --navy:#14123F; --indigo:#241B63; --violet:#5A3A99;
   --yellow:#FFC93C; --orange:#F7931E; --white:#FFFFFF;
   --ink:#1A1550; --card:rgba(24,18,78,.80); --soft:#FFE9A8;
-  --fs-xs:36px; --fs-s:44px; --fs-m:60px; --fs-l:96px; --fs-xl:150px;
-  --pad:72px; --safe-top:200px;
+  /* Reels-safe box for every letter and key graphic: x 60-920, y 250-1480 */
+  --bx:60px; --bw:860px;
+  --fs-min:40px; --fs-s:44px; --fs-m:56px; --fs-l:76px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
@@ -31,203 +32,209 @@ body{font-family:'Pretendard',sans-serif;color:var(--white);word-break:keep-all}
 .abs{position:absolute}
 .scene{position:absolute;left:0;top:0;width:1080px;height:1920px;opacity:0}
 #s1{opacity:1}
-.txt{position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;font-weight:900;line-height:1;
+.txt{position:absolute;left:var(--bx);width:var(--bw);text-align:center;white-space:nowrap;font-weight:900;line-height:1;
   text-shadow:0 5px 0 rgba(10,6,40,.35)}
 .ib{display:inline-block}
 .y{color:var(--yellow)} .o{color:var(--orange)}
 .ext{color:var(--yellow)} .ext[data-ext="w"]{color:var(--white)}
-
-.card{position:absolute;border:4px solid var(--yellow);border-radius:36px;background:var(--card);
-  box-shadow:0 0 0 2px rgba(255,201,60,.18),0 0 36px rgba(255,201,60,.20),0 24px 48px rgba(8,5,40,.45)}
-.grid2{position:absolute;left:var(--pad);width:936px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.grid2 .card{position:relative}
-.chip{display:inline-block;background:var(--orange);color:var(--ink);font-weight:800;font-size:var(--fs-xs);
-  line-height:1;padding:10px 22px 12px;border-radius:999px;white-space:nowrap}
-.pill{position:absolute;left:var(--pad);width:936px;text-align:center;background:var(--yellow);color:var(--ink);
+.chip{display:inline-block;background:var(--orange);color:var(--ink);font-weight:800;font-size:var(--fs-min);
+  line-height:1;padding:8px 20px 10px;border-radius:999px;white-space:nowrap}
+.pill{position:absolute;left:var(--bx);width:var(--bw);text-align:center;background:var(--yellow);color:var(--ink);
   font-weight:900;border-radius:999px;display:flex;align-items:center;justify-content:center;white-space:nowrap;
-  box-shadow:0 10px 0 var(--orange),0 24px 40px rgba(8,5,40,.4)}
+  box-shadow:0 8px 0 var(--orange),0 20px 36px rgba(8,5,40,.4)}
+.box{position:absolute;border:4px solid var(--yellow);border-radius:28px;background:var(--card);
+  box-shadow:0 0 0 2px rgba(255,201,60,.18),0 0 32px rgba(255,201,60,.2),0 20px 40px rgba(8,5,40,.45)}
 
-/* S2 */
-.kw{padding:36px 38px;display:flex;flex-direction:column;justify-content:space-between}
-.kw b{font-weight:900;font-size:104px;line-height:1;color:var(--yellow)}
-/* S3 food */
-.food{padding:30px 32px 34px;display:flex;flex-direction:column;justify-content:space-between}
-.food .top{display:flex;justify-content:space-between;align-items:center}
-.food .no{font-weight:800;font-size:52px;color:var(--orange);line-height:1}
-.food .nm{font-weight:800;font-size:68px;line-height:1.15}
-/* S4 booth */
-.booth{padding:28px 32px;display:flex;flex-direction:column;justify-content:center;gap:10px}
-.booth .nm{font-weight:800;font-size:var(--fs-m);line-height:1.15}
-.booth .sub{font-weight:600;font-size:var(--fs-xs);line-height:1.25;color:var(--soft)}
-.banner{position:absolute;left:var(--pad);width:936px;overflow:hidden}
-.banner .in{position:absolute;left:-60px;top:0;width:1060px;height:100%;background-size:cover;background-repeat:no-repeat}
-.mk{position:absolute;left:var(--pad);width:936px;height:196px;display:flex;align-items:center;gap:30px;padding:0 40px}
-.mk .bd{flex:none;width:108px;height:108px;border-radius:50%;background:var(--yellow);color:var(--ink);
-  font-weight:900;font-size:var(--fs-m);display:flex;align-items:center;justify-content:center}
-.mk .nm{font-weight:900;font-size:84px;line-height:1}
-.mk .chip{margin-left:auto}
-/* S5 */
-.step{height:132px;display:flex;align-items:center;gap:36px}
-.step .node{flex:none;width:80px;height:80px;border-radius:50%;border:4px solid var(--yellow);background:var(--ink);
-  color:var(--yellow);font-weight:900;font-size:40px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 24px rgba(255,201,60,.55);position:relative}
-.step .lb{font-weight:800;font-size:68px;line-height:1}
-/* S6 */
+/* transitions */
+.wipe{position:absolute;left:0;top:-160px;width:560px;height:2240px;opacity:1;pointer-events:none;transform:translateX(-1700px) skewX(-14deg)}
+
+/* S2 words */
+.wr{position:absolute;left:var(--bx);width:var(--bw);height:170px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:5px solid rgba(255,201,60,.55)}
+.wr b{font-weight:900;font-size:112px;line-height:1;text-shadow:0 6px 0 rgba(10,6,40,.4)}
+/* S3 food icons */
+.fcell{position:absolute;width:286px;height:540px;display:flex;align-items:center;justify-content:center}
+.fw{display:flex;flex-direction:column;align-items:center;gap:12px}
+.fi{width:250px;height:250px}
+.fi svg{width:250px;height:250px;display:block;filter:drop-shadow(0 12px 0 rgba(10,6,40,.3))}
+.fn{font-weight:800;font-size:48px;line-height:1.15;text-align:center;white-space:nowrap}
+/* S4 stickers & activity rows */
+.st{position:absolute;display:flex;flex-direction:column;justify-content:center;padding:0 40px;border-radius:44px;color:var(--ink);
+  box-shadow:0 10px 0 rgba(10,6,40,.35)}
+.st b{font-weight:900;font-size:60px;line-height:1.1;white-space:nowrap}
+.st small{font-weight:700;font-size:var(--fs-min);line-height:1.2}
+.ar{position:absolute;height:120px;display:flex;align-items:center;gap:22px;padding:0 36px 0 24px;border-radius:60px;color:var(--ink);
+  box-shadow:0 8px 0 rgba(10,6,40,.35)}
+.ar i{flex:none;width:72px;height:72px;border-radius:50%;background:var(--ink);color:var(--yellow);font-style:normal;font-weight:900;
+  font-size:var(--fs-s);display:flex;align-items:center;justify-content:center}
+.ar b{font-weight:900;font-size:64px;line-height:1;white-space:nowrap}
+/* S5 gates */
+.gr{position:absolute;left:60px;height:100px;display:flex;align-items:center;gap:26px}
+.gr .node{flex:none;width:72px;height:72px;border-radius:50%;border:4px solid var(--yellow);background:var(--ink);color:var(--yellow);
+  font-weight:900;font-size:var(--fs-min);display:flex;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(255,201,60,.5)}
+.gr .lb{font-weight:800;font-size:var(--fs-m);line-height:1;white-space:nowrap}
+/* S6 shuttle */
 .stop{position:absolute;width:64px;height:64px;border-radius:50%;background:var(--ink);border:5px solid var(--yellow);
-  color:var(--yellow);font-weight:900;font-size:34px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 22px rgba(255,201,60,.55)}
-.sl{display:flex;align-items:center;gap:16px;height:72px}
-.sl i{flex:none;width:48px;height:48px;border-radius:50%;background:var(--yellow);color:var(--ink);font-style:normal;
-  font-weight:900;font-size:32px;display:flex;align-items:center;justify-content:center}
-.sl span{font-weight:700;font-size:var(--fs-s);line-height:1;white-space:nowrap}
-.seal{position:absolute;width:220px;height:220px;border-radius:50%;
+  color:var(--yellow);font-weight:900;font-size:var(--fs-min);display:flex;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(255,201,60,.55)}
+.sl{display:flex;align-items:center;gap:14px;height:64px}
+.sl i{flex:none;width:56px;height:56px;border-radius:50%;background:var(--ink);border:4px solid var(--yellow);color:var(--yellow);font-style:normal;
+  font-weight:900;font-size:var(--fs-min);display:flex;align-items:center;justify-content:center}
+.sl span{font-weight:700;font-size:var(--fs-min);line-height:1;white-space:nowrap}
+.sl.on i{background:var(--yellow);color:var(--ink)}
+.seal{position:absolute;width:180px;height:180px;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#FFE27A 0%,#FFC93C 45%,#F7931E 100%);color:var(--ink);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:0 0 0 8px rgba(255,255,255,.85),0 18px 36px rgba(8,5,40,.5)}
-.info{padding:26px 30px;display:flex;flex-direction:column;justify-content:center;gap:10px}
-.info .k{font-weight:900;font-size:var(--fs-s);color:var(--orange);line-height:1}
-.info .v{font-weight:800;font-size:var(--fs-m);line-height:1.1}
-.info .s{font-weight:600;font-size:var(--fs-xs);color:var(--soft);line-height:1.2}
-/* S7 */
-.irow{display:flex;align-items:center;gap:26px}
-.irow .k{flex:none;width:200px;font-weight:900;font-size:var(--fs-s);color:var(--orange);line-height:1}
-.irow .v{font-weight:800;font-size:50px;line-height:1.1}
-.irow .v small{display:block;font-weight:600;font-size:var(--fs-xs);color:var(--soft);margin-top:6px}
-.jbar{position:absolute;left:var(--pad);width:936px;height:150px;display:flex;border-radius:28px;overflow:hidden;
-  border:4px solid var(--yellow)}
-.jbar div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--ink)}
-.jbar small{font-weight:800;font-size:var(--fs-xs);line-height:1}
-.jbar b{font-weight:900;font-size:72px;line-height:1}
+  display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(255,255,255,.85),0 16px 32px rgba(8,5,40,.5)}
+.info{padding:8px 24px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.info .l1{display:flex;align-items:baseline;gap:14px;white-space:nowrap}
+.info .k{font-weight:900;font-size:var(--fs-min);color:var(--orange);line-height:1}
+.info .v{font-weight:800;font-size:46px;line-height:1.05}
+.info .s{font-weight:600;font-size:var(--fs-min);color:var(--soft);line-height:1.1;white-space:nowrap}
+/* S7 stage */
+.ir{position:absolute;left:var(--bx);width:var(--bw);display:flex;align-items:center;gap:24px}
+.ir .k{flex:none;width:170px;font-weight:900;font-size:var(--fs-min);color:var(--orange);line-height:1;text-align:left}
+.ir .v{font-weight:800;font-size:var(--fs-s);line-height:1.1;text-align:left}
+.ir .v small{display:block;font-weight:600;font-size:var(--fs-min);color:var(--soft);margin-top:4px}
+.eq{position:absolute;bottom:0;width:26px;border-radius:13px 13px 0 0}
 /* S8 */
-.crop{position:absolute;left:0;top:0;width:100%;height:100%;border-radius:32px;background-repeat:no-repeat}
+.crop{position:absolute;left:0;top:0;width:100%;height:100%;border-radius:24px;background-repeat:no-repeat}
 #flash{position:absolute;left:0;top:0;width:1080px;height:1920px;background:#fff;opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30" data-poster-time="2.8">
 
-  <!-- ambient world: glow, stars, bulb strings (driven by the master clock) -->
+  <!-- ambient world: glow, stars, bulb strings (full frame, driven by the master clock) -->
   <div id="halo" class="abs" style="left:-160px;top:620px;width:1400px;height:1400px;border-radius:50%;
        background:radial-gradient(circle,rgba(255,201,60,.20) 0%,rgba(247,147,30,.07) 40%,rgba(0,0,0,0) 68%)"></div>
   <svg id="sky" class="fill" viewBox="0 0 1080 1920"></svg>
   <svg id="bulbs" class="fill" viewBox="0 0 1080 1920"></svg>
 
-  <!-- S1 opening -->
+  <!-- S1 opening: fully composed from frame 0 so the 3:4 grid thumbnail shows the title -->
   <section class="scene" id="s1">
-    <div id="plate" class="abs" style="left:-50px;top:470px;width:1180px;height:1245px;overflow:hidden;
-         -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 7%,#000 90%,transparent 100%),linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);
-         -webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 7%,#000 90%,transparent 100%),linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);mask-composite:intersect">
-      <img src="assets/plate.png" alt="BETHL'S 3D 글자와 야시장 일러스트" style="position:absolute;left:0;top:0;width:1180px;height:1245px">
-      <div id="glint" class="abs" style="left:0;top:-100px;width:150px;height:1500px;transform:rotate(18deg);
+    <div id="plate" class="abs" style="left:29px;top:480px;width:923px;height:973px;overflow:hidden;
+         -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 92%,transparent 100%),linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);
+         -webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 92%,transparent 100%),linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%);mask-composite:intersect">
+      <img src="assets/plate.png" alt="BETHL'S 3D 글자와 야시장 일러스트" style="position:absolute;left:0;top:0;width:923px;height:973px">
+      <div id="glint" class="abs" style="left:0;top:-100px;width:140px;height:1400px;transform:rotate(18deg);
            background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.35),rgba(255,255,255,0))"></div>
     </div>
-    <div class="txt" id="eyebrow" style="top:232px;font-size:38px;font-weight:700;letter-spacing:.04em;color:var(--soft)">1ST HAPPY YOUTH FESTIVAL · BETHL'S</div>
-    <div class="txt" id="title" style="top:300px;font-size:var(--fs-xl)"><span class="ib" id="ta">가을밤</span> <span class="ib y" id="tb">야시장</span></div>
+    <div class="txt" id="eyebrow" style="top:252px;font-size:var(--fs-min);font-weight:700;color:var(--soft)">1ST HAPPY YOUTH FESTIVAL · BETHL'S</div>
+    <div class="txt" id="title" style="top:306px;font-size:134px"><span class="ib" id="ta">가을밤</span> <span class="ib y" id="tb">야시장</span></div>
   </section>
 
-  <!-- S2 all free -->
+  <!-- S2 everything is free: kinetic words -->
   <section class="scene" id="s2">
-    <div class="txt" id="s2a" style="top:214px;font-size:130px">전부</div>
-    <div class="txt ext" id="s2b" data-ext="y" style="top:340px;font-size:360px">무료!</div>
-    <div class="grid2" id="s2g" style="top:850px;grid-auto-rows:400px"></div>
+    <div class="txt" id="s2a" style="top:252px;font-size:100px">전부</div>
+    <div class="txt ext" id="s2b" data-ext="y" style="top:350px;font-size:270px">무료!</div>
+    <div id="s2w"></div>
   </section>
 
-  <!-- S3 food -->
+  <!-- S3 food icons -->
   <section class="scene" id="s3">
-    <div class="txt" id="s3a" style="top:214px;font-size:164px">먹거리</div>
-    <div class="txt ext" id="s3b" data-ext="y" style="top:392px;font-size:164px">전부 무료!</div>
-    <div class="grid2" id="s3g" style="top:640px;grid-auto-rows:334px;gap:26px"></div>
+    <div class="txt" style="top:252px;font-size:96px"><span class="ib" id="s3a">먹거리</span> <span class="ib ext" data-ext="y" id="s3b">전부 무료!</span></div>
+    <div id="s3g"></div>
   </section>
 
   <!-- S4a booths -->
   <section class="scene" id="s4a">
-    <div class="txt" id="s4a1" style="top:222px;font-size:80px">플리마켓과</div>
-    <div class="txt" id="s4a2" style="top:312px;font-size:300px;line-height:.95"><span class="ib ext" data-ext="y" id="n15">15</span><span class="ib" id="n15t" style="font-size:120px"> 개 부스</span></div>
-    <div class="grid2" id="s4ag" style="top:660px;grid-auto-rows:270px"></div>
-    <div class="banner card" id="s4ab" style="top:1260px;height:430px;padding:0"><div class="in" id="s4ain"></div></div>
+    <div class="txt" id="s4a1" style="top:252px;font-size:56px">플리마켓과</div>
+    <div class="txt" id="s4a2" style="top:322px;font-size:290px;line-height:.95"><span class="ib ext" data-ext="y" id="n15">0</span><span class="ib" id="n15t" style="font-size:104px"> 개 부스</span></div>
+    <div id="s4ag"></div>
   </section>
 
   <!-- S4b make & shoot -->
   <section class="scene" id="s4b">
-    <div class="txt o" id="s4b0" style="top:214px;font-size:var(--fs-s);letter-spacing:.12em">체험 부스</div>
-    <div class="txt ext" id="s4b1" data-ext="w" style="top:274px;font-size:134px">만들고 찍자!</div>
+    <div class="txt o" id="s4b0" style="top:252px;font-size:var(--fs-s);letter-spacing:.12em">체험 부스</div>
+    <div class="txt ext" id="s4b1" data-ext="w" style="top:304px;font-size:140px">만들고</div>
+    <div class="txt ext" id="s4b2" data-ext="y" style="top:450px;font-size:170px">찍자!</div>
     <div id="s4bl"></div>
-    <div class="pill" id="s4bp" style="top:1580px;height:140px;font-size:64px">무료 · 만들면 가져가요</div>
+    <div class="pill" id="s4bp" style="top:1372px;height:108px;font-size:var(--fs-m)">무료 · 만들면 가져가요</div>
   </section>
 
-  <!-- S5 challenge -->
+  <!-- S5 gates -->
   <section class="scene" id="s5">
-    <div class="txt" id="s5a" style="top:216px;font-size:104px">7개 관문을</div>
-    <div class="txt ext" id="s5b" data-ext="y" style="top:334px;font-size:164px">통과하라!</div>
-    <div class="card" id="s5c" style="left:56px;top:552px;width:968px;height:980px;padding:24px 48px">
-      <div id="s5line" class="abs" style="left:84px;top:90px;width:8px;height:792px;border-radius:4px;transform-origin:50% 0;
-           background:linear-gradient(180deg,var(--yellow),var(--orange))"></div>
-      <div id="s5l" style="position:relative"></div>
+    <div class="txt" style="top:252px;font-size:64px"><span class="ib" id="s5a">7개 관문을</span></div>
+    <div class="txt ext" id="s5b" data-ext="y" style="top:330px;font-size:112px">통과하라!</div>
+    <div id="s5line" class="abs" style="left:92px;top:530px;width:8px;height:600px;border-radius:4px;transform-origin:50% 0;
+         background:linear-gradient(180deg,var(--yellow),var(--orange))"></div>
+    <div id="s5track" class="abs" style="left:92px;top:530px;width:8px;height:600px;border-radius:4px;background:rgba(255,255,255,.18)"></div>
+    <div id="s5g"></div>
+    <div id="runner" class="abs" style="left:80px;top:514px;width:32px;height:32px;border-radius:50%;background:#fff;
+         box-shadow:0 0 0 6px rgba(255,201,60,.7),0 0 40px 14px rgba(255,201,60,.8);opacity:0"></div>
+    <div class="abs" id="s5cnt" style="left:600px;top:500px;width:320px;text-align:center;font-weight:900;line-height:1">
+      <div id="s5n" class="ext" data-ext="y" style="font-size:300px">1</div>
+      <div style="font-size:72px;margin-top:6px"><span class="o">/</span>7</div>
     </div>
-    <div class="pill" id="s5p" style="top:1572px;height:140px;font-size:64px">개인도 팀도 모두 도전!</div>
+    <div class="txt" id="s5w1" style="top:1236px;font-size:100px"><span class="ib w">개인도</span> <span class="ib w y">팀도</span></div>
+    <div class="txt" id="s5w2" style="top:1350px;font-size:100px"><span class="ib w">모두</span> <span class="ib w y">도전!</span></div>
   </section>
 
   <!-- S6 shuttle -->
   <section class="scene" id="s6">
-    <div class="txt ext" id="s6a" data-ext="y" style="top:214px;font-size:128px">데리러 갈게!</div>
-    <div class="txt" id="s6b" style="top:368px;font-size:var(--fs-m)">왕복 무료 셔틀</div>
-    <div class="abs" id="s6c" style="left:0;top:448px;width:1080px;display:flex;justify-content:center">
-      <div class="chip" style="background:transparent;border:4px solid var(--orange);color:var(--orange);font-size:var(--fs-xs)">노선 11.14(토) 확정</div></div>
+    <div class="txt" id="s6a" style="top:252px;font-size:100px"><span class="ib ext" data-ext="y" id="s6a1">데리러</span> <span class="ib ext" data-ext="y" id="s6a2">갈게!</span></div>
+    <div class="txt" id="s6b" style="top:364px;font-size:52px"><span class="ib w">왕복</span> <span class="ib w">무료</span> <span class="ib w">셔틀</span></div>
+    <div class="abs" id="s6c" style="left:60px;top:430px;width:860px;display:flex;justify-content:center">
+      <div class="chip" style="background:transparent;border:4px solid var(--orange);color:var(--orange)">노선 11.14(토) 확정</div></div>
     <svg class="fill" viewBox="0 0 1080 1920" style="pointer-events:none">
-      <circle id="mapfill" cx="540" cy="810" r="230" fill="rgba(255,201,60,.07)"/>
-      <circle cx="540" cy="810" r="115" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="3" stroke-dasharray="4 14" stroke-linecap="round"/>
-      <circle id="ring" cx="540" cy="810" r="230" fill="none" stroke="#FFC93C" stroke-width="7" stroke-dasharray="1445.1" stroke-dashoffset="1445.1" transform="rotate(-90 540 810)"/>
-      <line id="radius" x1="540" y1="810" x2="540" y2="580" stroke="#fff" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/>
+      <circle id="mapfill" cx="490" cy="790" r="230" fill="rgba(255,201,60,.07)"/>
+      <circle cx="490" cy="790" r="115" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="3" stroke-dasharray="4 14" stroke-linecap="round"/>
+      <circle cx="490" cy="790" r="230" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="7"/>
+      <circle id="ring" cx="490" cy="790" r="230" fill="none" stroke="#FFC93C" stroke-width="9" stroke-linecap="round" stroke-dasharray="1445.1" stroke-dashoffset="1445.1" transform="rotate(-90 490 790)"/>
+      <line id="radius" x1="490" y1="790" x2="490" y2="560" stroke="#fff" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/>
     </svg>
-    <div class="abs" id="s6r" style="left:560px;top:668px;font-weight:900;font-size:var(--fs-s);line-height:1;text-shadow:0 4px 0 rgba(10,6,40,.5)">5km</div>
-    <div class="abs" id="s6h" style="left:470px;top:766px;width:140px;height:88px;border-radius:44px;background:var(--yellow);color:var(--ink);
-         display:flex;align-items:center;justify-content:center;font-weight:900;font-size:40px;box-shadow:0 0 30px rgba(255,201,60,.6)">교회</div>
+    <div class="abs" id="s6r" style="left:510px;top:640px;font-weight:900;font-size:var(--fs-min);line-height:1;text-shadow:0 4px 0 rgba(10,6,40,.5)">5km</div>
+    <div class="abs" id="s6h" style="left:430px;top:750px;width:120px;height:80px;border-radius:40px;background:var(--yellow);color:var(--ink);
+         display:flex;align-items:center;justify-content:center;font-weight:900;font-size:var(--fs-min);box-shadow:0 0 30px rgba(255,201,60,.6)">교회</div>
     <div id="s6stops"></div>
-    <div id="bus" class="abs" style="left:0;top:0;width:60px;height:34px;border-radius:9px;background:var(--yellow);border:3px solid #fff;
-         box-shadow:0 0 18px rgba(255,201,60,.9)"><div class="abs" style="left:8px;top:6px;width:34px;height:12px;background:var(--ink);border-radius:3px"></div></div>
-    <div class="seal" id="s6seal" style="left:806px;top:540px"><div style="font-weight:800;font-size:40px;line-height:1">요금</div><div style="font-weight:900;font-size:100px;line-height:1">0원</div></div>
-    <div class="abs" id="s6l" style="left:72px;top:1106px;width:936px;display:grid;grid-template-columns:1fr 1fr;column-gap:24px;grid-auto-flow:column;grid-template-rows:repeat(4,72px)"></div>
-    <div class="grid2" id="s6g" style="top:1424px;grid-auto-rows:268px;gap:24px">
-      <div class="card info"><div class="k">갈 때</div><div class="v">집 앞 픽업</div><div class="s">교회 반경 5km</div></div>
-      <div class="card info"><div class="k">올 때</div><div class="v">귀가 차량</div><div class="s">9시 마치고 출발</div></div>
-    </div>
+    <div id="bus" class="abs" style="left:0;top:0;width:76px;height:44px;opacity:0">
+      <svg viewBox="0 0 76 44" width="76" height="44"><g stroke="#1A1550" stroke-width="3" stroke-linejoin="round">
+        <rect x="2" y="4" width="72" height="30" rx="9" fill="#FFC93C"/>
+        <rect x="9" y="10" width="14" height="11" rx="2" fill="#fff"/><rect x="27" y="10" width="14" height="11" rx="2" fill="#fff"/><rect x="45" y="10" width="14" height="11" rx="2" fill="#fff"/>
+        <rect x="62" y="10" width="9" height="14" rx="2" fill="#1A1550"/>
+        <circle cx="19" cy="35" r="7" fill="#1A1550"/><circle cx="57" cy="35" r="7" fill="#1A1550"/></g></svg></div>
+    <div class="seal" id="s6seal" style="left:740px;top:496px"><div style="font-weight:800;font-size:var(--fs-min);line-height:1">요금</div><div style="font-weight:900;font-size:80px;line-height:1">0원</div></div>
+    <div class="abs" id="s6l" style="left:60px;top:1066px;width:860px;display:grid;grid-template-columns:1fr 1fr;column-gap:24px;grid-auto-flow:column;grid-template-rows:repeat(4,64px)"></div>
+    <div class="box info" id="s6i1" style="left:60px;top:1352px;width:418px;height:128px"><div class="l1"><span class="k">갈 때</span><span class="v">집 앞 픽업</span></div><div class="s">교회 반경 5km</div></div>
+    <div class="box info" id="s6i2" style="left:502px;top:1352px;width:418px;height:128px"><div class="l1"><span class="k">올 때</span><span class="v">귀가 차량</span></div><div class="s">9시 마치고 출발</div></div>
   </section>
 
-  <!-- S7 PESTA -->
+  <!-- S7 PESTA stage -->
   <section class="scene" id="s7">
-    <div class="txt ext" id="s7a" data-ext="y" style="top:204px;font-size:188px">PESTA</div>
-    <div class="txt" id="s7b" style="top:398px;font-size:100px">밴드대회</div>
-    <div class="txt o" id="s7c" style="top:528px;font-size:52px">총상금</div>
-    <div class="txt" id="s7d" style="top:590px;font-size:230px;line-height:.95"><span class="ib ext" data-ext="y" id="prize">0</span><span class="ib" style="font-size:108px">만원</span></div>
-    <div class="card" id="s7i" style="left:72px;top:872px;width:936px;height:352px;padding:20px 40px;display:flex;flex-direction:column;justify-content:space-between">
-      <div class="irow" id="s7i1"><div class="k">일시</div><div class="v">11.21(토) 19:00–21:00</div></div>
-      <div class="irow" id="s7i2"><div class="k">대상</div><div class="v">중1–고3 · 밴드 &amp; 솔로<small>노래·연주·랩</small></div></div>
-      <div class="irow" id="s7i3"><div class="k">지원마감</div><div class="v">11월 6일(금)</div></div>
-    </div>
-    <div class="jbar" id="s7j" style="top:1252px">
-      <div style="width:40%;background:var(--orange)"><small>전문 평가원</small><b>40%</b></div>
-      <div style="width:60%;background:var(--yellow)"><small>현장 반응</small><b>60%</b></div>
-    </div>
-    <div class="txt" id="s7k" style="top:1424px;font-size:56px">친구들 많이 데려오세요!</div>
-    <div class="card" id="s7f" style="left:72px;top:1520px;width:936px;height:176px;padding:16px 40px;display:flex;flex-direction:column;justify-content:center;gap:10px">
-      <div class="irow"><div class="k" style="width:150px">신청</div><div class="v" style="font-size:var(--fs-s)">인스타 프로필 링크</div></div>
-      <div class="irow"><div class="k" style="width:150px">문의</div><div class="v" style="font-size:var(--fs-s)">010-3129-8050</div></div>
-    </div>
+    <svg id="beams" class="fill" viewBox="0 0 1080 1920" style="pointer-events:none"></svg>
+    <div class="txt" id="s7a" style="top:252px;font-size:150px"></div>
+    <div class="txt" id="s7b" style="top:410px;font-size:72px">밴드대회</div>
+    <div class="txt o" id="s7c" style="top:500px;font-size:var(--fs-s)">총상금</div>
+    <div class="txt" id="s7d" style="top:552px;font-size:170px;line-height:.95"><span class="ib ext" data-ext="y" id="prize">0</span><span class="ib" style="font-size:80px">만원</span></div>
+    <div class="ir" id="s7i1" style="top:744px"><div class="k">일시</div><div class="v">11.21(토) 19:00–21:00</div></div>
+    <div class="ir" id="s7i2" style="top:820px"><div class="k">대상</div><div class="v">중1–고3 · 밴드 &amp; 솔로<small>노래·연주·랩</small></div></div>
+    <div class="ir" id="s7i3" style="top:934px"><div class="k">지원마감</div><div class="v">11월 6일(금)</div></div>
+    <div class="abs" id="s7j1" style="left:60px;top:1020px;width:344px;text-align:center;font-weight:800;font-size:var(--fs-min);line-height:1;color:var(--orange)">전문 평가원 40%</div>
+    <div class="abs" id="s7j2" style="left:404px;top:1020px;width:516px;text-align:center;font-weight:800;font-size:var(--fs-min);line-height:1;color:var(--yellow)">현장 반응 60%</div>
+    <div class="abs" id="s7eq" style="left:60px;top:1080px;width:860px;height:170px"></div>
+    <div class="txt" id="s7k" style="top:1272px;font-size:48px">친구들 많이 데려오세요!</div>
+    <div class="ir" id="s7f1" style="top:1352px"><div class="k" style="width:120px">신청</div><div class="v">인스타 프로필 링크</div></div>
+    <div class="ir" id="s7f2" style="top:1418px"><div class="k" style="width:120px">문의</div><div class="v">010-3129-8050</div></div>
   </section>
 
-  <!-- S8 ending -->
+  <!-- S8 ending: event title stays visible so the 3:4 thumbnail still reads 가을밤 야시장 / BETHL'S -->
   <section class="scene" id="s8">
-    <div class="txt ext" id="s8a" data-ext="y" style="top:214px;font-size:186px">여기로 와!</div>
-    <div class="txt" id="s8b" style="top:452px;font-size:var(--fs-l)">2026. 11. 21 SAT</div>
-    <div class="txt y" id="s8c" style="top:568px;font-size:134px">16:00–21:00</div>
-    <div class="txt" id="s8d" style="top:732px;font-size:58px;font-weight:800">행복한베들레헴교회</div>
-    <div class="txt" id="s8e" style="top:806px;font-size:var(--fs-s);font-weight:600;color:var(--soft)">정원데크·비전홀 (동탄지성로 451-9)</div>
-    <div class="pill" id="s8f" style="left:190px;width:700px;top:884px;height:104px;font-size:var(--fs-m)">@YOUTH_BETHLS</div>
-    <div class="card" id="s8g" style="left:72px;top:1060px;width:936px;height:640px;overflow:hidden;padding:0">
-      <div class="crop" id="s8crop" style="background-image:url('assets/plate.png');background-size:928px auto;background-position:0 -342px"></div>
+    <div class="txt" id="s8h" style="top:252px;font-size:var(--fs-min);font-weight:700;color:var(--soft)">1ST HAPPY YOUTH FESTIVAL</div>
+    <div class="txt ext" id="s8n" data-ext="w" style="top:304px;font-size:110px">BETHL'S</div>
+    <div class="txt" id="s8t" style="top:428px;font-size:100px">가을밤 <span class="y">야시장</span></div>
+    <div class="txt ext" id="s8a" data-ext="y" style="top:556px;font-size:120px">여기로 와!</div>
+    <div class="txt" id="s8b" style="top:716px;font-size:var(--fs-l)">2026. 11. 21 SAT</div>
+    <div class="txt y" id="s8c" style="top:806px;font-size:100px">16:00–21:00</div>
+    <div class="txt" id="s8d" style="top:930px;font-size:var(--fs-m);font-weight:800">행복한베들레헴교회</div>
+    <div class="txt" id="s8e" style="top:996px;font-size:var(--fs-min);font-weight:600;color:var(--soft)">정원데크·비전홀 (동탄지성로 451-9)</div>
+    <div class="pill" id="s8f" style="left:170px;width:640px;top:1060px;height:96px;font-size:52px">@YOUTH_BETHLS</div>
+    <div class="box" id="s8g" style="left:60px;top:1184px;width:860px;height:296px;overflow:hidden;padding:0">
+      <div class="crop" id="s8crop" style="background-image:url('assets/plate.png');background-size:888px auto;background-position:-20px -634px"></div>
     </div>
   </section>
 
+  <!-- wipes between scenes -->
+  <div id="wipeA" class="wipe" style="background:linear-gradient(90deg,#F7931E,#FFB02E)"></div>
+  <div id="wipeB" class="wipe" style="background:linear-gradient(90deg,#FFC93C,#FFE27A)"></div>
   <div id="flash"></div>
 </div>
 
@@ -237,51 +244,75 @@ body{font-family:'Pretendard',sans-serif;color:var(--white);word-break:keep-all}
 /* ---------- config: one place for time, palette and content ---------- */
 const CFG = {
   dur: 30, beat: 0.5,
-  c: { yellow:'#FFC93C', orange:'#F7931E', ink:'#1A1550', white:'#FFFFFF' },
-  scene: { s1:[0,3.5], s2:[3.5,6], s3:[6,9.5], s4a:[9.5,11.5], s4b:[11.5,13.5], s5:[13.5,17.5], s6:[17.5,22], s7:[22,27.5], s8:[27.5,30] }
+  scene: { s1:[0,3.5], s2:[3.5,6], s3:[6,9.5], s4a:[9.5,11.5], s4b:[11.5,13.5], s5:[13.5,17.5], s6:[17.5,22], s7:[22,27.5], s8:[27.5,30] },
+  wipeAt: [3.5, 6, 9.5, 11.5, 13.5, 17.5, 22, 27.5]
 };
-const DATA = {
-  kw:   [['입장','누구나 환영'],['먹거리','무료'],['체험','무료'],['챌린지','무료']],
-  food: ['붕어빵','부산 어묵탕<br>&amp;분식','직화 닭꼬치','타꼬야키','핫초코·라떼<br>Cafe On!','삼김&amp;라면'],
-  booth:[['포토존&amp;<br>인생네컷',''],['DIY 물품<br>만들기','키링·팔찌·솜사탕·달고나'],['캠프파이어<br>Zone',''],['소원의 숲','']],
-  make: ['인생네컷','캘리그라피','비즈 팔찌','키링 만들기','캐리커처'],
-  steps:['만보기 워밍업','워터보틀 플립','1초 음악 퀴즈','병뚜껑 컬링','스피드 컵 쌓기','스태프를 이겨라','데시벨 측정'],
-  stops:['영통·망포역','경희대 국제캠퍼스','동탄 메타폴리스','롯데백화점 동탄','병점역','진안·기산','권선·곡반정','삼성디지털시티']
-};
-const MAP = { cx:540, cy:810, r:230 };
+const MAP = { cx:490, cy:790, r:230 };
+const GATE0 = 14.0, GATE_DT = 0.25;          // 7 gates, one per 8th note
+const BUS0 = 18.2, LAP = 1.2;                 // first lap lights the stops
+const INK = '#1A1550';
+
+/* One icon family: flat fills, 6px ink outline, round joins */
+const ICON_OPEN = `<svg viewBox="0 0 200 200"><g stroke="${INK}" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">`;
+const ICONS = [
+  /* 붕어빵 */ `${ICON_OPEN}<path d="M22 104C22 66 66 44 108 54C136 61 152 80 160 96L186 70C190 90 190 118 184 138L160 112C150 138 128 156 98 156C52 158 22 138 22 104Z" fill="#F7931E"/><path d="M58 66C80 54 110 54 130 70" fill="none" stroke="#FFC93C" stroke-width="8"/><circle cx="56" cy="92" r="10" fill="#fff"/><circle cx="58" cy="92" r="4" fill="${INK}" stroke="none"/><path d="M92 82C102 100 102 124 92 142M118 84C128 102 128 122 118 140M144 100C148 108 148 116 144 124" fill="none" stroke="#A8460A" stroke-width="6"/></g></svg>`,
+  /* 어묵꼬치 */ `${ICON_OPEN}<line x1="30" y1="182" x2="170" y2="22" stroke="#E8C79A" stroke-width="10"/><g transform="translate(74 132) rotate(-49)"><rect x="-36" y="-21" width="72" height="42" rx="15" fill="#fff"/><path d="M-20 -21V21M-2 -21V21M16 -21V21" stroke="#F4A6A0" stroke-width="7"/></g><g transform="translate(108 92) rotate(-49)"><rect x="-36" y="-21" width="72" height="42" rx="15" fill="#FFE9A8"/><path d="M-20 -21V21M-2 -21V21M16 -21V21" stroke="#F7931E" stroke-width="7"/></g><g transform="translate(142 52) rotate(-49)"><rect x="-36" y="-21" width="72" height="42" rx="15" fill="#fff"/><path d="M-20 -21V21M-2 -21V21M16 -21V21" stroke="#F4A6A0" stroke-width="7"/></g></g></svg>`,
+  /* 직화 닭꼬치 */ `${ICON_OPEN}<line x1="30" y1="182" x2="170" y2="22" stroke="#E8C79A" stroke-width="10"/><g transform="translate(70 136) rotate(-49)"><rect x="-30" y="-27" width="60" height="54" rx="18" fill="#D9741A"/><path d="M-14 -10L2 -4M-12 6L8 12" stroke="#A8460A" stroke-width="6"/></g><g transform="translate(104 96) rotate(-49)"><rect x="-30" y="-27" width="60" height="54" rx="18" fill="#F7931E"/><path d="M-14 -10L2 -4M-12 6L8 12" stroke="#A8460A" stroke-width="6"/></g><g transform="translate(138 56) rotate(-49)"><rect x="-30" y="-27" width="60" height="54" rx="18" fill="#D9741A"/><path d="M-14 -10L2 -4M-12 6L8 12" stroke="#A8460A" stroke-width="6"/></g><path d="M150 196C128 176 140 154 150 136C152 152 172 160 168 180C166 188 160 194 150 196Z" fill="#F7931E"/><path d="M152 190C144 182 148 172 152 164C156 174 162 178 160 184Z" fill="#FFC93C" stroke-width="4"/></g></svg>`,
+  /* 타꼬야키 */ `${ICON_OPEN}<ellipse cx="100" cy="156" rx="84" ry="30" fill="#fff"/><line x1="100" y1="84" x2="124" y2="22" stroke="#E8C79A" stroke-width="8"/><circle cx="100" cy="86" r="36" fill="#E0A040"/><circle cx="66" cy="124" r="36" fill="#E0A040"/><circle cx="134" cy="124" r="36" fill="#E0A040"/><path d="M80 72L116 92M84 88L112 104M50 112L82 132M52 128L76 142M118 112L150 132M122 128L146 142" stroke="#A8460A" stroke-width="6" fill="none"/><path d="M98 66L106 56M120 100L132 96M66 104L74 96" stroke="#FFC93C" stroke-width="6" fill="none"/></g></svg>`,
+  /* 컵 */ `${ICON_OPEN}<path d="M54 74L146 74L134 168Q133 178 123 178L77 178Q67 178 66 168Z" fill="#fff"/><path d="M58 108L142 108L137 148L63 148Z" fill="#F7931E"/><circle cx="100" cy="128" r="11" fill="#FFE9A8"/><rect x="46" y="54" width="108" height="24" rx="9" fill="#A8460A"/><path d="M80 44C70 34 90 28 80 14M106 44C96 34 116 28 106 14M132 44C122 34 142 28 132 14" fill="none" stroke="#fff" stroke-width="7"/></g></svg>`,
+  /* 삼각김밥 & 라면 */ `${ICON_OPEN}<path d="M76 34L124 132Q128 142 118 142L34 142Q24 142 28 132Z" fill="#fff"/><path d="M32 112L122 112L128 134Q130 142 120 142L34 142Q24 142 28 134Z" fill="${INK}"/><rect x="58" y="70" width="34" height="26" rx="6" fill="#F7931E"/><path d="M104 130L190 130Q186 176 147 182Q108 176 104 130Z" fill="#F7931E"/><path d="M112 128C118 100 128 100 134 128M138 128C144 96 156 96 160 128M164 128C170 104 178 104 184 128" fill="none" stroke="#FFE9A8" stroke-width="9"/><path d="M146 98L184 30M158 102L194 42" stroke="#E8C79A" stroke-width="6" fill="none"/></g></svg>`
+];
+const FOOD = ['붕어빵','부산 어묵탕<br>&amp;분식','직화 닭꼬치','타꼬야키','핫초코·라떼<br>Cafe On!','삼김&amp;라면'];
+const ALLFREE = [['입장','누구나 환영','#FFC93C'],['먹거리','무료','#FFFFFF'],['체험','무료','#FFC93C'],['챌린지','무료','#FFFFFF']];
+const BOOTH = [ // [html, sub, bg, left, width, top, height, tilt]
+  ['포토존&amp;인생네컷','', '#FFC93C', 60, 700, 680, 150, -2],
+  ['DIY 물품 만들기','키링·팔찌·솜사탕·달고나', '#FFFFFF', 220, 700, 858, 200, 2],
+  ['캠프파이어 Zone','', '#F7931E', 60, 700, 1086, 150, -1.5],
+  ['소원의 숲','', '#FFE9A8', 220, 700, 1264, 150, 1.5]
+];
+const MAKE = ['인생네컷','캘리그라피','비즈 팔찌','키링 만들기','캐리커처'];
+const GATES = ['만보기 워밍업','워터보틀 플립','1초 음악 퀴즈','병뚜껑 컬링','스피드 컵 쌓기','스태프를 이겨라','데시벨 측정'];
+const STOPS_TXT = ['영통·망포역','경희대 국제캠퍼스','동탄 메타폴리스','롯데백화점 동탄','병점역','진안·기산','권선·곡반정','삼성디지털시티'];
 
 /* ---------- build repeated DOM from data ---------- */
 const $ = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
-$('#s2g').innerHTML = DATA.kw.map(([t,c]) => `<div class="card kw cardk"><b>${t}</b><span class="chip" style="align-self:flex-start">${c}</span></div>`).join('');
-$('#s3g').innerHTML = DATA.food.map((n,i) => `<div class="card food cardf"><div class="top"><span class="no">0${i+1}</span><span class="chip">무료</span></div><div class="nm">${n}</div></div>`).join('');
-$('#s4ag').innerHTML = DATA.booth.map(([n,s]) => `<div class="card booth cardb"><div class="nm">${n}</div>${s?`<div class="sub">${s}</div>`:''}</div>`).join('');
-$('#s4ain').style.backgroundImage = "url('assets/banner.png')";
-$('#s4ain').style.backgroundSize = 'cover';
-$('#s4ain').style.backgroundPosition = '50% 50%';
-$('#s4ain').style.backgroundRepeat = 'no-repeat';
-$('#s4bl').innerHTML = DATA.make.map((n,i) => `<div class="card mk mkr" style="top:${470+i*220}px"><div class="bd">${i+1}</div><div class="nm">${n}</div><span class="chip">무료</span></div>`).join('');
-$('#s5l').innerHTML = DATA.steps.map((n,i) => `<div class="step"><div class="node">${i+1}</div><div class="lb">${n}</div></div>`).join('');
-const STOPS = DATA.stops.map((n,i) => {
-  const a = (-90 + 22.5 + 45*i) * Math.PI/180;
-  return { n, x: MAP.cx + MAP.r*Math.cos(a), y: MAP.cy + MAP.r*Math.sin(a) };
+$('#s2w').innerHTML = ALLFREE.map(([w,c,col],i) => `<div class="wr" style="top:${680+i*176}px"><b style="color:${col}" class="s2word">${w}</b><span class="chip s2chip">${c}</span></div>`).join('');
+$('#s3g').innerHTML = FOOD.map((n,i) => {
+  const x = 60 + (i%3)*287, y = 420 + Math.floor(i/3)*530;
+  return `<div class="fcell" style="left:${x}px;top:${y}px"><div class="fw"><div class="fi">${ICONS[i]}</div><div class="fn">${n}</div><span class="chip">무료</span></div></div>`;
+}).join('');
+$('#s4ag').innerHTML = BOOTH.map(([h,s,bg,l,w,t,ht]) => `<div class="st stk" style="left:${l}px;width:${w}px;top:${t}px;height:${ht}px;background:${bg}"><b>${h}</b>${s?`<small>${s}</small>`:''}</div>`).join('');
+const AR_BG = ['#FFC93C','#F7931E','#FFFFFF','#FFE9A8','#FFC93C'];
+$('#s4bl').innerHTML = MAKE.map((n,i) => `<div class="ar arow" style="left:${i%2?200:60}px;top:${660+i*140}px;background:${AR_BG[i]}"><i>${i+1}</i><b>${n}</b></div>`).join('');
+$('#s5g').innerHTML = GATES.map((n,i) => `<div class="gr" style="top:${480+i*100}px"><div class="node">${i+1}</div><div class="lb">${n}</div></div>`).join('');
+const STOPS = STOPS_TXT.map((n,i) => {
+  const deg = -90 + 22.5 + 45*i, a = deg*Math.PI/180;
+  return { n, deg, x: MAP.cx + MAP.r*Math.cos(a), y: MAP.cy + MAP.r*Math.sin(a), t: BUS0 + (deg+90)/360*LAP };
 });
-$('#s6stops').innerHTML = STOPS.map((s,i) => `<div class="stop" style="left:${s.x-32}px;top:${s.y-32}px">${i+1}</div>`).join('');
+$('#s6stops').innerHTML = STOPS.map((s,i) => `<div class="stop" style="left:${(s.x-32).toFixed(1)}px;top:${(s.y-32).toFixed(1)}px">${i+1}</div>`).join('');
 $('#s6l').innerHTML = STOPS.map((s,i) => `<div class="sl"><i>${i+1}</i><span>${s.n}</span></div>`).join('');
+$('#s7a').innerHTML = 'PESTA'.split('').map(c => `<span class="ib ext pl" data-ext="y">${c}</span>`).join('');
+const EQN = 24, EQW = 26, EQG = (860-EQN*EQW)/(EQN-1);
+$('#s7eq').innerHTML = Array.from({length:EQN}, (_,i) => `<div class="eq" style="left:${(i*(EQW+EQG)).toFixed(1)}px;height:20px;background:${i < 9.6 ? '#F7931E' : '#FFC93C'}"></div>`).join('');
+const eqBars = $$('#s7eq .eq');
+$('#beams').innerHTML = `<defs><linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`
+  + [[170,'#FFC93C'],[540,'#FFFFFF'],[910,'#F7931E']].map(([x,c],i) => `<g class="beam" data-x="${x}" data-i="${i}"><polygon points="${x-34},-40 ${x+34},-40 ${x+210},1500 ${x-210},1500" fill="${c}" opacity=".20"/></g>`).join('');
+const beams = $$('#beams .beam');
 
 /* ---------- 3D extrusion in the poster's orange/yellow ---------- */
 const hex = c => [1,3,5].map(i => parseInt(c.substr(i,2),16));
 const mix = (a,b,k) => { const A=hex(a), B=hex(b); return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*k)).join(',')+')'; };
 $$('.ext').forEach(e => {
-  const fs = parseFloat(getComputedStyle(e).fontSize), n = Math.max(6, Math.round(fs/12));
+  const fs = parseFloat(getComputedStyle(e).fontSize), n = Math.max(6, Math.round(fs/14));
   const white = e.dataset.ext === 'w';
   const c1 = white ? '#FFC93C' : '#F7931E', c2 = white ? '#F7931E' : '#A8460A', s = [];
   for (let i=1;i<=n;i++) s.push(`${(i*.8).toFixed(1)}px ${(i*.9).toFixed(1)}px 0 ${mix(c1,c2,i/n)}`);
-  s.push(`${(n*.8+6).toFixed(1)}px ${(n*.9+14).toFixed(1)}px 24px rgba(10,6,40,.55)`);
+  s.push(`${(n*.8+6).toFixed(1)}px ${(n*.9+12).toFixed(1)}px 20px rgba(10,6,40,.55)`);
   e.style.textShadow = s.join(',');
 });
 
-/* ---------- ambient world ---------- */
+/* ---------- ambient world (full frame) ---------- */
 const NS = 'http://www.w3.org/2000/svg';
 function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed>>>15, 1|seed);
   t = t + Math.imul(t ^ t>>>7, 61|t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; }; }
@@ -307,12 +338,15 @@ function bulbString(p0,p1,p2,n){
 }
 const bulbs = bulbString('-20 60','540 170','1100 60',22).concat(bulbString('-20 1800','540 1900','1100 1800',22));
 
-/* ---------- data-driven state (functions of the master clock) ---------- */
-const P = { n:0 }, B = { a:-90, o:0 };
+/* ---------- data-driven state (pure functions of the master clock) ---------- */
+const N15 = { n:0 }, P = { n:0 }, B = { a:-90, o:0 };
 const clock = { t:0 };
+const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+const $n15 = $('#n15'), $prize = $('#prize'), $bus = $('#bus'), $ring = $('#ring'), $cnt = $('#s5n'), $halo = $('#halo'), $run = $('#runner');
+const slRows = $$('#s6l .sl');
 function render(){
   const t = clock.t, ph = (t % CFG.beat), pulse = Math.exp(-ph*9);
-  $('#halo').style.opacity = (.55 + .45*pulse).toFixed(3);
+  $halo.style.opacity = (.55 + .45*pulse).toFixed(3);
   stars.forEach(s => {
     const k = .5 + .5*Math.sin(t*s.w + s.ph), sc = s.s*(.55 + .6*k + .25*pulse);
     s.p.setAttribute('transform',`translate(${s.x.toFixed(1)} ${s.y.toFixed(1)}) scale(${sc.toFixed(2)})`);
@@ -322,11 +356,28 @@ function render(){
     const k = .5 + .5*Math.sin(t*5 - b.i*.7), v = Math.min(1,.55 + .45*k*.9 + .3*pulse);
     b.core.setAttribute('opacity', v.toFixed(2)); b.glow.setAttribute('opacity', (.12 + .38*k + .25*pulse).toFixed(2));
   });
-  $('#prize').textContent = Math.round(P.n);
-  const th = B.a * Math.PI/180, x = MAP.cx + MAP.r*Math.cos(th), y = MAP.cy + MAP.r*Math.sin(th);
-  const bus = $('#bus');
-  bus.style.transform = `translate(${(x-30).toFixed(1)}px,${(y-17).toFixed(1)}px) rotate(${(B.a+90).toFixed(1)}deg)`;
-  bus.style.opacity = B.o;
+  $n15.textContent = Math.round(N15.n);
+  $prize.textContent = Math.round(P.n);
+  /* S5 counter 1 -> 7, one gate per 8th note, with a punch on every change */
+  const g = clamp(Math.floor((t-GATE0)/GATE_DT)+1, 1, 7), since = (t-GATE0) - (g-1)*GATE_DT;
+  $cnt.textContent = g;
+  $cnt.style.transform = `scale(${(1 + .16*Math.exp(-Math.max(0,since)*16)).toFixed(3)})`;
+  /* S6 bus on the 5km loop: the gold arc grows behind it, stops light as it passes */
+  const th = B.a*Math.PI/180, x = MAP.cx + MAP.r*Math.cos(th), y = MAP.cy + MAP.r*Math.sin(th);
+  $bus.style.transform = `translate(${(x-38).toFixed(1)}px,${(y-22).toFixed(1)}px) rotate(${(B.a+90).toFixed(1)}deg)`;
+  $bus.style.opacity = B.o;
+  $ring.style.strokeDashoffset = (1445.1*(1 - clamp((B.a+90)/360, 0, 1))).toFixed(1);
+  slRows.forEach((r,i) => r.classList.toggle('on', t >= STOPS[i].t));
+  /* S7 stage: beams sweep, equaliser jumps on the beat */
+  if (t > 21.9 && t < 27.7){
+    beams.forEach(b => { const i = +b.dataset.i, x0 = +b.dataset.x;
+      b.setAttribute('transform', `rotate(${(16*Math.sin(t*1.6 + i*2.1)).toFixed(2)} ${x0} -40)`); });
+    const beat = Math.exp(-ph*7);
+    eqBars.forEach((e,i) => {
+      const a = .5 + .5*Math.sin(t*(2.3 + .37*i) + i*1.7), b2 = .5 + .5*Math.sin(i*2.1);
+      e.style.height = (170*(.14 + .86*(.55*a + .45*beat*b2))).toFixed(1) + 'px';
+    });
+  }
 }
 
 /* ---------- timeline ---------- */
@@ -337,99 +388,121 @@ tl.to(clock, { t:CFG.dur, duration:CFG.dur, ease:'none' }, 0);
 tl.eventCallback('onUpdate', render);
 (function loop(){ render(); requestAnimationFrame(loop); })();
 
+/* scenes zoom through each other */
 const sceneIO = (id, key) => {
   const [a,b] = CFG.scene[key];
-  tl.fromTo(id, { opacity:0, y:50 }, { opacity:1, y:0, duration:.35, ease:'power3.out' }, a);
-  tl.to(id, { opacity:0, y:-50, duration:.25, ease:'power2.in' }, b-.25);
+  tl.fromTo(id, { opacity:0, scale:.86, transformOrigin:'50% 50%' }, { opacity:1, scale:1, duration:.4, ease:'power3.out' }, a);
+  tl.to(id, { opacity:0, scale:1.22, duration:.25, ease:'power2.in' }, b-.25);
 };
 const stamp = (sel, at, from={}, to={}) => tl.fromTo(sel,
   Object.assign({ scale:2.4, opacity:0, rotation:-6 }, from),
   Object.assign({ scale:1, opacity:1, rotation:0, duration:.5, ease:'back.out(1.5)' }, to), at);
 const rise = (sel, at, d=.45) => tl.fromTo(sel, { y:50, opacity:0 }, { y:0, opacity:1, duration:d, ease:'back.out(1.6)' }, at);
-const hang = (sel, at, step=.25) => tl.fromTo(sel,
-  { y:-150, opacity:0, rotation:i => i%2 ? 5 : -5, transformOrigin:'50% 0%' },
-  { y:0, opacity:1, rotation:0, duration:.55, ease:'back.out(1.5)', stagger:step }, at);
+const pop = (sel, at, step=.12, d=.4) => tl.fromTo(sel, { scale:0, y:40, opacity:0, transformOrigin:'50% 80%' }, { scale:1, y:0, opacity:1, duration:d, ease:'back.out(2.4)', stagger:step }, at);
 const flash = at => { tl.fromTo('#flash', { opacity:0 }, { opacity:.5, duration:.04, ease:'none' }, at);
                       tl.to('#flash', { opacity:0, duration:.3, ease:'power2.out' }, at+.04); };
+CFG.wipeAt.forEach(b => {
+  tl.fromTo('#wipeA', { x:-1700, skewX:-14 }, { x:1700, skewX:-14, duration:.5, ease:'power2.inOut' }, b-.3);
+  tl.fromTo('#wipeB', { x:-1700, skewX:-14 }, { x:1700, skewX:-14, duration:.5, ease:'power2.inOut' }, b-.22);
+});
 
-/* S1 opening: zoom into the market illustration, then the title lands on the beat */
-tl.fromTo('#plate', { opacity:0, scale:.7, y:140, transformOrigin:'50% 0%' }, { opacity:1, scale:1, y:0, duration:1.1, ease:'expo.out' }, 0);
-tl.to('#plate', { scale:1.05, duration:2.15, ease:'none' }, 1.1);
+/* S1 opening: everything is on screen at t=0 (thumbnail-safe); the illustration zooms in, the title lands on the beat */
+tl.fromTo('#plate', { scale:.92, transformOrigin:'50% 0%' }, { scale:1, duration:1.6, ease:'power3.out' }, 0);
+tl.to('#plate', { scale:1.012, duration:1.65, ease:'none' }, 1.6);
 tl.to('#plate', { scale:1.55, opacity:0, duration:.25, ease:'power3.in' }, 3.25);
-tl.fromTo('#eyebrow', { y:-30, opacity:0 }, { y:0, opacity:1, duration:.4, ease:'power3.out' }, .15);
-tl.fromTo('#ta', { scale:0, rotation:-8, transformOrigin:'50% 100%' }, { scale:1, rotation:0, duration:.5, ease:'back.out(2.2)' }, .5);
-tl.fromTo('#tb', { scale:0, rotation:8, transformOrigin:'50% 100%' }, { scale:1, rotation:0, duration:.5, ease:'back.out(2.2)' }, 1.0);
-tl.fromTo('#glint', { x:-300 }, { x:1300, duration:.9, ease:'power1.inOut' }, 1.8);
-tl.to(['#eyebrow','#title'], { opacity:0, y:-40, duration:.25, ease:'power2.in' }, 3.25);
+tl.fromTo('#ta', { scale:.88, transformOrigin:'50% 100%' }, { scale:1, duration:.5, ease:'back.out(3)' }, 0);
+tl.fromTo('#tb', { scale:.88, transformOrigin:'50% 100%' }, { scale:1, duration:.5, ease:'back.out(3)' }, .5);
+tl.to('#title', { scale:1.05, duration:.12, yoyo:true, repeat:1, transformOrigin:'50% 100%', ease:'sine.inOut' }, 1.0);
+tl.fromTo('#glint', { x:-300 }, { x:1200, duration:.9, ease:'power1.inOut' }, 1.8);
+tl.to(['#eyebrow','#title'], { opacity:0, y:-40, scale:1.1, duration:.25, ease:'power2.in' }, 3.25);
 
-/* S2 all free */
+/* S2 전부 무료! — words slam, then the four free things punch in from alternating sides */
 sceneIO('#s2','s2');
 tl.fromTo('#s2a', { y:-60, opacity:0, scale:.8 }, { y:0, opacity:1, scale:1, duration:.4, ease:'back.out(2)' }, 3.5);
 stamp('#s2b', 3.5, { scale:2.6 }, { duration:.5 }); flash(3.5);
-hang('#s2g .cardk', 4.0, .25);
+tl.fromTo('#s2w .wr', { x:i => i%2 ? 420 : -420, opacity:0 }, { x:0, opacity:1, duration:.35, ease:'back.out(1.7)', stagger:.25 }, 4.0);
+tl.fromTo('#s2w .s2chip', { scale:0 }, { scale:1, duration:.3, ease:'back.out(3)', stagger:.25 }, 4.12);
 
-/* S3 food */
+/* S3 먹거리 — flat icons bounce in, then keep bobbing on the beat */
 sceneIO('#s3','s3');
-rise('#s3a', 6.05); stamp('#s3b', 6.3, { scale:1.8 });
-hang('#s3g .cardf', 6.5, .25);
+tl.fromTo('#s3a', { scale:0, rotation:-8, transformOrigin:'50% 100%' }, { scale:1, rotation:0, duration:.45, ease:'back.out(2.4)' }, 6.05);
+stamp('#s3b', 6.3, { scale:1.9 }, { duration:.45 });
+tl.fromTo('#s3g .fw', { scale:0, y:90, rotation:i => i%2 ? 14 : -14, transformOrigin:'50% 60%' },
+  { scale:1, y:0, rotation:0, duration:.75, ease:'elastic.out(1,.5)', stagger:.25 }, 6.5);
+tl.to('#s3g .fi', { y:-16, duration:.25, yoyo:true, repeat:11, ease:'sine.inOut', stagger:.06 }, 7.2);
 
-/* S4a booths */
+/* S4a 15개 부스 — counter runs up, stickers slap onto the screen */
 sceneIO('#s4a','s4a');
-rise('#s4a1', 9.55); stamp('#n15', 9.7, { scale:2.2 }); tl.fromTo('#n15t', { x:60, opacity:0 }, { x:0, opacity:1, duration:.4, ease:'power3.out' }, 9.95);
-hang('#s4ag .cardb', 10.0, .2);
-rise('#s4ab', 10.5);
-tl.fromTo('#s4ain', { x:0 }, { x:60, duration:1.2, ease:'none' }, 10.3);
+rise('#s4a1', 9.55);
+stamp('#n15', 9.7, { scale:2.2 }, { duration:.45 });
+tl.fromTo(N15, { n:0 }, { n:15, duration:.7, ease:'power2.out' }, 9.7);
+tl.fromTo('#n15t', { x:60, opacity:0 }, { x:0, opacity:1, duration:.4, ease:'power3.out' }, 9.95);
+tl.fromTo('#s4ag .stk', { x:i => i%2 ? 420 : -420, rotation:i => i%2 ? 14 : -14, opacity:0 },
+  { x:0, rotation:i => [-2,2,-1.5,1.5][i], opacity:1, duration:.45, ease:'back.out(1.8)', stagger:.17 }, 10.0);
 
-/* S4b make & shoot */
+/* S4b 만들고 찍자! — two words, a camera flash, then the five activities swing in */
 sceneIO('#s4b','s4b');
-rise('#s4b0', 11.55, .3); stamp('#s4b1', 11.65, { scale:1.8 });
-tl.fromTo('#s4bl .mkr', { x:160, opacity:0 }, { x:0, opacity:1, duration:.4, ease:'power3.out', stagger:.17 }, 11.85);
-stamp('#s4bp', 12.65, { scale:1.5, rotation:0 }, { duration:.45 });
+rise('#s4b0', 11.55, .3);
+stamp('#s4b1', 11.6, { scale:1.9 }, { duration:.4 });
+stamp('#s4b2', 11.85, { scale:2.4 }, { duration:.4 }); flash(11.95);
+tl.fromTo('#s4bl .arow', { x:i => i%2 ? 600 : -600, skewX:-12, opacity:0 }, { x:0, skewX:0, opacity:1, duration:.4, ease:'power3.out', stagger:.14 }, 12.0);
+stamp('#s4bp', 12.7, { scale:1.5, rotation:0 }, { duration:.4 });
 
-/* S5 challenge */
+/* S5 7단계 챌린지 — a runner passes the gates; the big number counts 1 -> 7 */
 sceneIO('#s5','s5');
-rise('#s5a', 13.55); stamp('#s5b', 13.7, { scale:2 });
-tl.fromTo('#s5c', { opacity:0, scale:.96 }, { opacity:1, scale:1, duration:.3, ease:'power2.out' }, 13.8);
-tl.fromTo('#s5line', { scaleY:0 }, { scaleY:1, duration:1.5, ease:'none' }, 14.0);
-tl.fromTo('#s5l .step', { x:-70, opacity:0 }, { x:0, opacity:1, duration:.3, ease:'power3.out', stagger:.25 }, 14.0);
-tl.fromTo('#s5l .node', { backgroundColor:'#1A1550', color:'#FFC93C' }, { backgroundColor:'#FFC93C', color:'#1A1550', duration:.2, stagger:.25 }, 14.0);
-stamp('#s5p', 15.8, { scale:1.6, rotation:0 }, { duration:.45 });
+tl.fromTo('#s5a', { x:-200, opacity:0 }, { x:0, opacity:1, duration:.4, ease:'power3.out' }, 13.55);
+stamp('#s5b', 13.7, { scale:2 }, { duration:.45 });
+tl.fromTo('#runner', { y:0, opacity:0 }, { y:0, opacity:1, duration:.2 }, 13.8);
+tl.fromTo('#runner', { y:0 }, { y:600, duration:GATE_DT*6, ease:'none' }, GATE0);
+tl.fromTo('#s5line', { scaleY:0 }, { scaleY:1, duration:GATE_DT*6, ease:'none' }, GATE0);
+tl.fromTo('#s5g .gr', { x:-90, opacity:0 }, { x:0, opacity:1, duration:.3, ease:'power3.out', stagger:GATE_DT }, GATE0);
+tl.fromTo('#s5g .node', { backgroundColor:INK, color:'#FFC93C', scale:.7 }, { backgroundColor:'#FFC93C', color:INK, scale:1, duration:.25, ease:'back.out(3)', stagger:GATE_DT }, GATE0);
+tl.fromTo('#s5cnt', { opacity:0, x:80 }, { opacity:1, x:0, duration:.35, ease:'power3.out' }, 13.85);
+tl.fromTo('#s5w1 .w, #s5w2 .w', { scale:0, y:50, opacity:0, transformOrigin:'50% 80%' }, { scale:1, y:0, opacity:1, duration:.4, ease:'back.out(2.4)', stagger:.18 }, 15.8);
 
-/* S6 shuttle */
+/* S6 셔틀 — the bus runs the 5km loop and stamps each stop */
 sceneIO('#s6','s6');
-stamp('#s6a', 17.55, { scale:1.8 }); rise('#s6b', 17.8, .35); rise('#s6c', 17.95, .35);
-tl.fromTo('#ring', { strokeDashoffset:1445.1 }, { strokeDashoffset:0, duration:.9, ease:'power2.inOut' }, 18.0);
-tl.fromTo(['#mapfill','#radius'], { opacity:0 }, { opacity:1, duration:.4 }, 18.0);
-tl.fromTo(['#s6h','#s6r'], { scale:0, opacity:0 }, { scale:1, opacity:1, duration:.4, ease:'back.out(2)', stagger:.1 }, 18.1);
+tl.fromTo('#s6a1', { scale:0, rotation:-10, transformOrigin:'50% 100%' }, { scale:1, rotation:0, duration:.45, ease:'back.out(2.4)' }, 17.55);
+tl.fromTo('#s6a2', { scale:0, rotation:10, transformOrigin:'50% 100%' }, { scale:1, rotation:0, duration:.45, ease:'back.out(2.4)' }, 17.75);
+tl.fromTo('#s6b .w', { y:30, opacity:0 }, { y:0, opacity:1, duration:.3, ease:'power3.out', stagger:.12 }, 17.9);
+rise('#s6c', 18.0, .3);
+tl.fromTo(['#mapfill','#radius'], { opacity:0 }, { opacity:1, duration:.3 }, 17.9);
+tl.fromTo(['#s6h','#s6r'], { scale:0, opacity:0 }, { scale:1, opacity:1, duration:.4, ease:'back.out(2)', stagger:.1 }, 18.0);
 tl.fromTo('#s6seal', { scale:2.4, opacity:0, rotation:-30 }, { scale:1, opacity:1, rotation:-10, duration:.5, ease:'back.out(1.8)' }, 18.0);
-tl.fromTo(B, { a:-90, o:0 }, { a:270, o:1, duration:3.0, ease:'none', immediateRender:true }, 18.2);
-tl.fromTo('#s6stops .stop', { scale:0, opacity:0 }, { scale:1, opacity:1, duration:.3, ease:'back.out(2.4)', stagger:.15 }, 18.4);
-tl.fromTo('#s6l .sl', { x:30, opacity:0 }, { x:0, opacity:1, duration:.3, ease:'power3.out', stagger:.15 }, 18.4);
-hang('#s6g .info', 19.7, .25);
+tl.fromTo(B, { a:-90, o:0 }, { a:270, o:1, duration:LAP, ease:'none' }, BUS0);
+tl.to(B, { a:630, duration:2.4, ease:'none' }, BUS0 + LAP);
+STOPS.forEach((s,i) => {
+  tl.fromTo($$('#s6stops .stop')[i], { scale:0, opacity:0 }, { scale:1, opacity:1, duration:.3, ease:'back.out(3)' }, s.t - .05);
+  tl.fromTo(slRows[i], { x:30, opacity:0 }, { x:0, opacity:1, duration:.3, ease:'power3.out' }, s.t - .05);
+});
+tl.fromTo(['#s6i1','#s6i2'], { y:80, opacity:0 }, { y:0, opacity:1, duration:.45, ease:'back.out(1.6)', stagger:.25 }, 19.7);
 
-/* S7 PESTA */
+/* S7 PESTA — stage lights, a prize that counts up, a split equaliser as the judging bar */
 sceneIO('#s7','s7');
-stamp('#s7a', 22.05, { scale:2 }); tl.fromTo('#s7b', { x:-80, opacity:0 }, { x:0, opacity:1, duration:.4, ease:'power3.out' }, 22.3);
+tl.fromTo('#beams', { opacity:0 }, { opacity:1, duration:.5 }, 22.0);
+tl.fromTo('#s7a .pl', { y:-120, opacity:0, scale:.6 }, { y:0, opacity:1, scale:1, duration:.4, ease:'back.out(2.4)', stagger:.08 }, 22.05);
+tl.fromTo('#s7b', { x:-120, opacity:0 }, { x:0, opacity:1, duration:.4, ease:'power3.out' }, 22.4);
 rise('#s7c', 22.5, .3);
 stamp('#s7d', 22.6, { scale:1.5, rotation:0 }, { duration:.45 });
 tl.fromTo(P, { n:0 }, { n:150, duration:1.0, ease:'power2.out' }, 22.7);
-tl.fromTo('#s7i', { y:-100, opacity:0 }, { y:0, opacity:1, duration:.45, ease:'back.out(1.5)' }, 23.2);
-tl.fromTo(['#s7i1','#s7i2','#s7i3'], { x:-50, opacity:0 }, { x:0, opacity:1, duration:.3, ease:'power3.out', stagger:.2 }, 23.4);
-tl.fromTo('#s7j', { clipPath:'inset(0 100% 0 0)' }, { clipPath:'inset(0 0% 0 0)', duration:.8, ease:'power2.inOut' }, 24.4);
+tl.fromTo(['#s7i1','#s7i2','#s7i3'], { x:-120, opacity:0 }, { x:0, opacity:1, duration:.35, ease:'power3.out', stagger:.22 }, 23.4);
+tl.fromTo(['#s7j1','#s7j2'], { y:30, opacity:0 }, { y:0, opacity:1, duration:.35, ease:'power3.out', stagger:.2 }, 24.4);
+tl.fromTo('#s7eq', { opacity:0, scaleY:.1, transformOrigin:'50% 100%' }, { opacity:1, scaleY:1, duration:.5, ease:'back.out(1.6)' }, 24.4);
 stamp('#s7k', 25.3, { scale:1.5, rotation:0 }, { duration:.4 });
-tl.to('#s7k', { scale:1.06, duration:.25, yoyo:true, repeat:3, ease:'sine.inOut' }, 25.8);
-tl.fromTo('#s7f', { y:60, opacity:0 }, { y:0, opacity:1, duration:.45, ease:'back.out(1.5)' }, 25.8);
+tl.to('#s7k', { scale:1.04, duration:.25, yoyo:true, repeat:3, ease:'sine.inOut' }, 25.8);
+tl.fromTo(['#s7f1','#s7f2'], { x:120, opacity:0 }, { x:0, opacity:1, duration:.35, ease:'power3.out', stagger:.2 }, 25.8);
 
 /* S8 ending (holds to the last frame) */
 tl.fromTo('#s8', { opacity:0 }, { opacity:1, duration:.15, ease:'none' }, 27.5);
+tl.fromTo(['#s8h','#s8n','#s8t'], { y:-40, opacity:0 }, { y:0, opacity:1, duration:.35, ease:'power3.out', stagger:.08 }, 27.5);
 stamp('#s8a', 27.5, { scale:2.4 }); flash(27.5);
 tl.fromTo('#s8b', { y:60, opacity:0 }, { y:0, opacity:1, duration:.4, ease:'power3.out' }, 27.8);
 stamp('#s8c', 28.0, { scale:1.6, rotation:0 }, { duration:.45 });
 tl.fromTo(['#s8d','#s8e'], { y:30, opacity:0 }, { y:0, opacity:1, duration:.4, ease:'power3.out', stagger:.15 }, 28.3);
 stamp('#s8f', 28.55, { scale:1.5, rotation:0 }, { duration:.45 });
-tl.fromTo('#s8g', { y:140, opacity:0 }, { y:0, opacity:1, duration:.6, ease:'power3.out' }, 28.1);
-tl.fromTo('#s8crop', { scale:1.18, transformOrigin:'50% 60%' }, { scale:1, duration:1.6, ease:'power2.out' }, 28.1);
-tl.to('#s8a', { scale:1.05, duration:.25, yoyo:true, repeat:3, ease:'sine.inOut' }, 28.6);
+tl.fromTo('#s8g', { y:100, opacity:0 }, { y:0, opacity:1, duration:.6, ease:'power3.out' }, 28.1);
+tl.fromTo('#s8crop', { scale:1.15, transformOrigin:'50% 60%' }, { scale:1, duration:1.6, ease:'power2.out' }, 28.1);
+tl.to('#s8a', { scale:1.04, duration:.25, yoyo:true, repeat:3, ease:'sine.inOut' }, 28.6);
 </script>
 <script data-od-motion-source-player="6">
 
